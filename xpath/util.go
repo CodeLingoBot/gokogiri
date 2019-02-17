@@ -29,7 +29,7 @@ func go_resolve_variables(ctxt unsafe.Pointer, name, ns *C.char) (ret C.xmlXPath
 	return
 }
 
-// Convert an arbitrary value into a C.xmlXPathObjectPtr
+// ValueToXPathObject: Convert an arbitrary value into a C.xmlXPathObjectPtr
 // Unrecognised and nil values are converted to empty node sets.
 func ValueToXPathObject(val interface{}) (ret C.xmlXPathObjectPtr) {
 	if val == nil {

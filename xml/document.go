@@ -203,7 +203,7 @@ func ReadFile(filename string, options ParseOption) (doc *XmlDocument, err error
 	return
 }
 
-// Create an empty XML document and return an XmlDocument. The root element, along with
+// CreateEmptyDocument: Create an empty XML document and return an XmlDocument. The root element, along with
 // any top-level comments or processing instructions, can be added by calling
 // AddChild() on the document itself.
 func CreateEmptyDocument(inEncoding, outEncoding []byte) (doc *XmlDocument) {
@@ -246,7 +246,7 @@ func (document *XmlDocument) OutputEncoding() (encoding []byte) {
 	return
 }
 
-// Returns an XPath context that can be used to compile and evaluate XPath
+// DocXPathCtx returns an XPath context that can be used to compile and evaluate XPath
 // expressions.
 //
 // In most cases, you should call the Search or EvalXPath functions instead of
@@ -287,7 +287,7 @@ func (document *XmlDocument) Root() (element *ElementNode) {
 	return
 }
 
-// Get an element node by the value of its ID attribute. By convention this attribute
+// NodeById gets an element node by the value of its ID attribute. By convention this attribute
 // is named id, but the actual name of the attribute is set by the document's DTD or schema.
 //
 // The value for an ID attribute is guaranteed to be unique within a valid document.
@@ -389,7 +389,7 @@ func (document *XmlDocument) ParseFragment(input, url []byte, options ParseOptio
 	return
 }
 
-// Return the value of an NDATA entity declared in the DTD. If there is no such entity or
+// UnparsedEntityURI returns the value of an NDATA entity declared in the DTD. If there is no such entity or
 // the value cannot be encoded as a valid URI, an empty string is returned.
 //
 // Note that this library assumes you already know the name of entity and does not

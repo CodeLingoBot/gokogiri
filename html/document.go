@@ -51,7 +51,7 @@ var ErrSetMetaEncoding = errors.New("Set Meta Encoding failed")
 var ERR_FAILED_TO_PARSE_HTML = errors.New("failed to parse html input")
 var emptyStringBytes = []byte{0}
 
-//create a document
+// NewDocument: create a document
 func NewDocument(p unsafe.Pointer, contentLen int, inEncoding, outEncoding []byte) (doc *HtmlDocument) {
 	doc = &HtmlDocument{}
 	doc.XmlDocument = xml.NewDocument(p, contentLen, inEncoding, outEncoding)

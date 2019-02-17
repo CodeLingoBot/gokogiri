@@ -13,7 +13,7 @@ import "unsafe"
 
 type Nodeset []Node
 
-// Produce a slice of unsafe.Pointer objects, suitable for passing to a C function
+// ToPointers: Produce a slice of unsafe.Pointer objects, suitable for passing to a C function
 func (n Nodeset) ToPointers() (pointers []unsafe.Pointer) {
 	for _, node := range n {
 		pointers = append(pointers, node.NodePtr())
@@ -21,7 +21,7 @@ func (n Nodeset) ToPointers() (pointers []unsafe.Pointer) {
 	return
 }
 
-// Produce a C.xmlXPathObjectPtr suitable for passing to libxml2
+// ToXPathNodeset: Produce a C.xmlXPathObjectPtr suitable for passing to libxml2
 func (n Nodeset) ToXPathNodeset() (ret C.xmlXPathObjectPtr) {
 	ret = C.xmlXPathNewNodeSet(nil)
 	for _, node := range n {
@@ -30,7 +30,7 @@ func (n Nodeset) ToXPathNodeset() (ret C.xmlXPathObjectPtr) {
 	return
 }
 
-// Produce a C.xmlXPathObjectPtr marked as a ResultValueTree, suitable for passing to libxml2
+// ToXPathValueTree: Produce a C.xmlXPathObjectPtr marked as a ResultValueTree, suitable for passing to libxml2
 func (n Nodeset) ToXPathValueTree() (ret C.xmlXPathObjectPtr) {
 	if len(n) == 0 {
 		ret = C.xmlXPathNewValueTree(nil)

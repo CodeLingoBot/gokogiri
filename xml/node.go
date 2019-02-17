@@ -223,7 +223,7 @@ func (xmlNode *XmlNode) Coerce(data interface{}) (nodes []Node, err error) {
 	return xmlNode.coerce(data)
 }
 
-// Add a node as a child of the current node.
+// AddChild adds a node as a child of the current node.
 // Passing in a nodeset will add all the nodes as children of the current node.
 func (xmlNode *XmlNode) AddChild(data interface{}) (err error) {
 	switch t := data.(type) {
@@ -249,7 +249,7 @@ func (xmlNode *XmlNode) AddChild(data interface{}) (err error) {
 	return
 }
 
-// Insert a node immediately before this node in the document.
+// AddPreviousSibling: Insert a node immediately before this node in the document.
 // Passing in a nodeset will add all the nodes, in order.
 func (xmlNode *XmlNode) AddPreviousSibling(data interface{}) (err error) {
 	switch t := data.(type) {
@@ -275,7 +275,7 @@ func (xmlNode *XmlNode) AddPreviousSibling(data interface{}) (err error) {
 	return
 }
 
-// Insert a node immediately after this node in the document.
+// AddNextSibling: Insert a node immediately after this node in the document.
 // Passing in a nodeset will add all the nodes, in order.
 func (xmlNode *XmlNode) AddNextSibling(data interface{}) (err error) {
 	switch t := data.(type) {
@@ -308,13 +308,13 @@ func (xmlNode *XmlNode) ResetNodePtr() {
 	return
 }
 
-// Returns true if the node is valid. Nodes become
+// IsValid returns true if the node is valid. Nodes become
 // invalid when Remove() is called.
 func (xmlNode *XmlNode) IsValid() bool {
 	return xmlNode.valid
 }
 
-// Return the document containing this node. Removed or unlinked
+// MyDocument returns the document containing this node. Removed or unlinked
 // nodes still have a document associated with them.
 func (xmlNode *XmlNode) MyDocument() (document Document) {
 	document = xmlNode.Document.DocRef()
@@ -476,7 +476,7 @@ func (xmlNode *XmlNode) Attributes() (attributes map[string]*AttributeNode) {
 	return
 }
 
-// Return the attribute node, or nil if the attribute does not exist.
+// Attribute returns the attribute node, or nil if the attribute does not exist.
 func (xmlNode *XmlNode) Attribute(name string) (attribute *AttributeNode) {
 	if xmlNode.NodeType() != XML_ELEMENT_NODE {
 		return
@@ -497,7 +497,7 @@ func (xmlNode *XmlNode) Attribute(name string) (attribute *AttributeNode) {
 
 // Attr returns the value of an attribute.
 
-// If you need to check for the existence of an attribute,
+// Attr: If you need to check for the existence of an attribute,
 // use Attribute.
 func (xmlNode *XmlNode) Attr(name string) (val string) {
 	if xmlNode.NodeType() != XML_ELEMENT_NODE {
@@ -521,7 +521,7 @@ func (xmlNode *XmlNode) Attr(name string) (val string) {
 // While this call accepts QNames for the name parameter, it does not check
 // their validity.
 
-// Attributes such as "xml:lang" or "xml:space" are not is a formal namespace
+// SetAttr: Attributes such as "xml:lang" or "xml:space" are not is a formal namespace
 // and should be set by calling SetAttr with the prefix as part of the name.
 func (xmlNode *XmlNode) SetAttr(name, value string) (val string) {
 	val = value
@@ -543,7 +543,7 @@ func (xmlNode *XmlNode) SetAttr(name, value string) (val string) {
 // Attributes such as "xml:lang" or "xml:space" are not is a formal namespace
 // and should be set by calling SetAttr with the xml prefix as part of the name.
 
-// The namespace should already be declared and in-scope when SetNsAttr is called.
+// SetNsAttr: The namespace should already be declared and in-scope when SetNsAttr is called.
 // This restriction will be lifted in a future version.
 func (xmlNode *XmlNode) SetNsAttr(href, name, value string) (val string) {
 	val = value
@@ -595,7 +595,7 @@ func (xmlNode *XmlNode) Search(data interface{}) (result []Node, err error) {
 	return
 }
 
-// As the Search function, but passing a VariableScope that can be used to reolve variable
+// SearchWithVariables: As the Search function, but passing a VariableScope that can be used to reolve variable
 // names or registered function references in the XPath being evaluated.
 func (xmlNode *XmlNode) SearchWithVariables(data interface{}, v xpath.VariableScope) (result []Node, err error) {
 	switch data := data.(type) {
@@ -634,7 +634,7 @@ func (xmlNode *XmlNode) SearchWithVariables(data interface{}, v xpath.VariableSc
 
 // If the result is a boolean, a bool will be returned.
 
-// In any other cases, the result will be coerced to a string.
+// EvalXPath: In any other cases, the result will be coerced to a string.
 func (xmlNode *XmlNode) EvalXPath(data interface{}, v xpath.VariableScope) (result interface{}, err error) {
 	switch data := data.(type) {
 	case string:
@@ -686,7 +686,7 @@ func (xmlNode *XmlNode) EvalXPath(data interface{}, v xpath.VariableScope) (resu
 // intended for packages that implement XML standards and that are fully aware
 // of the consequences of suppressing a compilation error.
 
-// If a non-nil VariableScope is provided, any variables or registered functions present
+// EvalXPathAsBoolean: If a non-nil VariableScope is provided, any variables or registered functions present
 // in the xpath will be resolved.
 func (xmlNode *XmlNode) EvalXPathAsBoolean(data interface{}, v xpath.VariableScope) (result bool) {
 	switch data := data.(type) {
@@ -713,7 +713,7 @@ func (xmlNode *XmlNode) EvalXPathAsBoolean(data interface{}, v xpath.VariableSco
 	return
 }
 
-// The local name of the node. Use Namespace() to get the namespace.
+// Name: The local name of the node. Use Namespace() to get the namespace.
 func (xmlNode *XmlNode) Name() (name string) {
 	if xmlNode.Ptr.name != nil {
 		p := unsafe.Pointer(xmlNode.Ptr.name)
@@ -722,7 +722,7 @@ func (xmlNode *XmlNode) Name() (name string) {
 	return
 }
 
-// The namespace of the node. This is the empty string if there
+// Namespace: The namespace of the node. This is the empty string if there
 // no associated namespace.
 func (xmlNode *XmlNode) Namespace() (href string) {
 	if xmlNode.Ptr.ns != nil {
@@ -732,7 +732,7 @@ func (xmlNode *XmlNode) Namespace() (href string) {
 	return
 }
 
-// Set the local name of the node. The namespace is set via SetNamespace().
+// SetName: Set the local name of the node. The namespace is set via SetNamespace().
 func (xmlNode *XmlNode) SetName(name string) {
 	if len(name) > 0 {
 		nameBytes := GetCString([]byte(name))
@@ -782,7 +782,7 @@ func (xmlNode *XmlNode) serialize(format SerializationOption, encoding, outputBu
 // SerializeWithFormat allows you to control the serialization flags passed to libxml.
 // In most cases ToXml() and ToHtml() provide sensible defaults and should be preferred.
 
-// The format parameter should be a set of SerializationOption constants or'd together.
+// SerializeWithFormat: The format parameter should be a set of SerializationOption constants or'd together.
 // If encoding is nil, the document's output encoding is used - this defaults to UTF-8.
 // If outputBuffer is nil, one will be created for you.
 func (xmlNode *XmlNode) SerializeWithFormat(format SerializationOption, encoding, outputBuffer []byte) ([]byte, int) {
@@ -795,7 +795,7 @@ func (xmlNode *XmlNode) SerializeWithFormat(format SerializationOption, encoding
 
 // If you need finer control over the formatting, call SerializeWithFormat.
 
-// If encoding is nil, the document's output encoding is used - this defaults to UTF-8.
+// ToXml: If encoding is nil, the document's output encoding is used - this defaults to UTF-8.
 // If outputBuffer is nil, one will be created for you.
 func (xmlNode *XmlNode) ToXml(encoding, outputBuffer []byte) ([]byte, int) {
 	return xmlNode.serialize(XML_SAVE_AS_XML|XML_SAVE_FORMAT, encoding, outputBuffer)
@@ -820,7 +820,7 @@ func (xmlNode *XmlNode) ToUnformattedXml() string {
 // If you want to output XHTML, call SerializeWithFormat and enable the XML_SAVE_XHTML
 // flag as part of the format.
 
-// If encoding is nil, the document's output encoding is used - this defaults to UTF-8.
+// ToHtml: If encoding is nil, the document's output encoding is used - this defaults to UTF-8.
 // If outputBuffer is nil, one will be created for you.
 func (xmlNode *XmlNode) ToHtml(encoding, outputBuffer []byte) ([]byte, int) {
 	return xmlNode.serialize(XML_SAVE_AS_HTML|XML_SAVE_FORMAT, encoding, outputBuffer)
@@ -1066,7 +1066,7 @@ func (xmlNode *XmlNode) RemoveDefaultNamespace() {
 // You can add a namespace declaration by calling DeclareNamespace.
 // Calling SetNamespace will automatically add a declaration if required.
 
-// Calling SetNsAttr does *not* automatically create a declaration. This will
+// DeclaredNamespaces: Calling SetNsAttr does *not* automatically create a declaration. This will
 // fixed in a future version.
 func (xmlNode *XmlNode) DeclaredNamespaces() (result []NamespaceDeclaration) {
 	nodePtr := xmlNode.Ptr
@@ -1083,7 +1083,7 @@ func (xmlNode *XmlNode) DeclaredNamespaces() (result []NamespaceDeclaration) {
 
 // Add a namespace declaration to an element.
 
-// This is typically done on the root element or node high up in the tree
+// DeclareNamespace is typically done on the root element or node high up in the tree
 // to avoid duplication. The declaration is not created if the namespace
 // is already declared in this scope with the same prefix.
 func (xmlNode *XmlNode) DeclareNamespace(prefix, href string) {
@@ -1114,7 +1114,7 @@ func (xmlNode *XmlNode) DeclareNamespace(prefix, href string) {
 	_ = C.xmlNewNs(xmlNode.Ptr, (*C.xmlChar)(hrefPtr), (*C.xmlChar)(prefixPtr))
 }
 
-// Set the namespace of an element.
+// SetNamespace: Set the namespace of an element.
 func (xmlNode *XmlNode) SetNamespace(prefix, href string) {
 	if xmlNode.NodeType() != XML_ELEMENT_NODE {
 		return
@@ -1144,7 +1144,7 @@ func (xmlNode *XmlNode) SetNamespace(prefix, href string) {
 	C.xmlSetNs(xmlNode.Ptr, ns)
 }
 
-// Returns the line number on which the node appears, or a -1 if the
+// LineNumber returns the line number on which the node appears, or a -1 if the
 // line number cannot be determined.
 func (xmlNode *XmlNode) LineNumber() int {
 	return int(C.xmlGetLineNo(xmlNode.Ptr))

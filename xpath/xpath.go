@@ -103,7 +103,7 @@ func (xpath *XPath) RegisterNamespace(prefix, href string) bool {
 	return result == 0
 }
 
-// Evaluate an XPath and attempt to consume the result as a nodeset.
+// EvaluateAsNodeset: Evaluate an XPath and attempt to consume the result as a nodeset.
 func (xpath *XPath) EvaluateAsNodeset(nodePtr unsafe.Pointer, xpathExpr *Expression) (nodes []unsafe.Pointer, err error) {
 	if nodePtr == nil {
 		//evaluating xpath on a  nil node returns no result.
@@ -155,12 +155,12 @@ func (xpath *XPath) Evaluate(nodePtr unsafe.Pointer, xpathExpr *Expression) (err
 	return
 }
 
-// Determine the actual return type of the XPath evaluation.
+// ReturnType: Determine the actual return type of the XPath evaluation.
 func (xpath *XPath) ReturnType() XPathObjectType {
 	return XPathObjectType(C.getXPathObjectType(xpath.ResultPtr))
 }
 
-// Get the XPath result as a nodeset.
+// ResultAsNodeset gets the XPath result as a nodeset.
 func (xpath *XPath) ResultAsNodeset() (nodes []unsafe.Pointer, err error) {
 	if xpath.ResultPtr == nil {
 		return
@@ -181,7 +181,7 @@ func (xpath *XPath) ResultAsNodeset() (nodes []unsafe.Pointer, err error) {
 	return
 }
 
-// Coerce the result into a string
+// ResultAsString: Coerce the result into a string
 func (xpath *XPath) ResultAsString() (val string, err error) {
 	if xpath.ReturnType() != XPATH_STRING {
 		xpath.ResultPtr = C.xmlXPathConvertString(xpath.ResultPtr)
@@ -190,7 +190,7 @@ func (xpath *XPath) ResultAsString() (val string, err error) {
 	return
 }
 
-// Coerce the result into a number
+// ResultAsNumber: Coerce the result into a number
 func (xpath *XPath) ResultAsNumber() (val float64, err error) {
 	if xpath.ReturnType() != XPATH_NUMBER {
 		xpath.ResultPtr = C.xmlXPathConvertNumber(xpath.ResultPtr)
@@ -199,14 +199,14 @@ func (xpath *XPath) ResultAsNumber() (val float64, err error) {
 	return
 }
 
-// Coerce the result into a boolean
+// ResultAsBoolean: Coerce the result into a boolean
 func (xpath *XPath) ResultAsBoolean() (val bool, err error) {
 	xpath.ResultPtr = C.xmlXPathConvertBoolean(xpath.ResultPtr)
 	val = xpath.ResultPtr.boolval != 0
 	return
 }
 
-// Add a variable resolver.
+// SetResolver adds a variable resolver.
 func (xpath *XPath) SetResolver(v VariableScope) {
 	C.set_var_lookup(xpath.ContextPtr, unsafe.Pointer(&v))
 	C.set_function_lookup(xpath.ContextPtr, unsafe.Pointer(&v))
@@ -224,7 +224,7 @@ func (xpath *XPath) SetContextPosition(position, size int) {
 // determine the values of position() and last() for the
 // current context node.
 
-// This allows values to saved and restored during processing
+// GetContextPosition: This allows values to saved and restored during processing
 // of a document.
 func (xpath *XPath) GetContextPosition() (position, size int) {
 	position = int(xpath.ContextPtr.proximityPosition)
